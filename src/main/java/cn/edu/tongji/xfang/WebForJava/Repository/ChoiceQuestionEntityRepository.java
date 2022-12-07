@@ -42,4 +42,22 @@ public interface ChoiceQuestionEntityRepository extends JpaRepository<ChoiceQues
      * @return 返回题目分数
      */
     int findScoreByChoiceQuestionId(int question_id);
+
+    /**
+     * 查询用户在该章节下已作答题目信息
+     * @param chapter_id 章节id
+     * @param user_id 用户id
+     * @param question_type 题目类型
+     * @return 返回题目信息
+     */
+    @Query(value = "select * from choice_question where corr_chapter_id = ?1 and choice_question_id in (select question_id from answer_situation where user_id = ?2 and question_type = ?3 )", nativeQuery = true)
+    List<ChoiceQuestionEntity> findChoiceQuestionEntitiesByChapter(int chapter_id, int user_id, String question_type);
+
+    /**
+     * 根据章节查询题目信息
+     * @param chapter_id 章节id
+     * @return 返回题目信息
+     */
+    List<ChoiceQuestionEntity> findChoiceQuestionEntitiesByCorrChapterId(int chapter_id);
+
 }

@@ -28,4 +28,10 @@ public class QuestionController {
         return questionService.getRelatedQuestion(corrKnowledgeId,userId);
     }
 
+    @CrossOrigin("*")
+    @RequestMapping("chapter")
+    public JsonResultEntity getSelectedQue(@RequestParam("chapter_id") int corrChapterId, @RequestParam("user_id") int userId) throws Exception {
+        return questionService.getRelatedQuestionByChapter(corrChapterId,userId);
+    }
+
 }

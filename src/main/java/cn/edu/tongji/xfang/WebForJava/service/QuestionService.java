@@ -19,6 +19,14 @@ public interface QuestionService {
      */
     JsonResultEntity getRelatedQuestion(int corrKnowledgeId,int userId);
 
+    /**
+     * 根据章节获取问题列表
+     * @param corrChapterId 章节id
+     * @param userId 用户id
+     * @return 返回问题列表
+     */
+    JsonResultEntity getRelatedQuestionByChapter(int corrChapterId,int userId);
+
 
 
 }
