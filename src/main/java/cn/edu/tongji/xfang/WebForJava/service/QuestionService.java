@@ -30,5 +30,7 @@ public interface QuestionService {
 
     JsonResultEntity getUserChapterQuestionInfoByLesson(int corrLessonId,int userId);
 
+    JsonResultEntity answerQuestion(String questionType,int questionId,int UserId,String answer);
+
 
 }

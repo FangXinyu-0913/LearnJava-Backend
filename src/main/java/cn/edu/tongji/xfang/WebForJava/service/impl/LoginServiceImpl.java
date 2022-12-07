@@ -69,6 +69,5 @@ public class LoginServiceImpl implements LoginService {
             return message;
         }
         return message;
-
     }
 }

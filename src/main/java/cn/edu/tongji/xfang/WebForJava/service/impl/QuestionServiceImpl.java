@@ -188,4 +188,21 @@ public class QuestionServiceImpl implements QuestionService {
         return message;
     }
 
+    @Override
+    public JsonResultEntity answerQuestion(String questionType,int questionId,int UserId,String answer) {
+        JsonResultEntity message = new JsonResultEntity();
+        try {
+            int isSuccess = answerSituationEntityRepository.userAnswerQuestion(questionType, questionId, UserId, answer);
+            message.errorCode = 200;
+            message.status = true;
+            message.data.put("symbol", true);
+        } catch (Exception e) {
+            message.status = false;
+            message.errorCode = 300;
+            message.data.put("error", "该题已被回答过！");
+        }
+        return message;
+    }
+
+
 }

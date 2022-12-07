@@ -3,10 +3,7 @@ package cn.edu.tongji.xfang.WebForJava.controller;
 import cn.edu.tongji.xfang.WebForJava.models.JsonResultEntity;
 import cn.edu.tongji.xfang.WebForJava.service.QuestionService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -39,5 +36,12 @@ public class QuestionController {
     public JsonResultEntity getQueInfoByLesson(@RequestParam("lesson_id") int corrLessonId, @RequestParam("user_id") int userId) throws Exception {
         return questionService.getUserChapterQuestionInfoByLesson(corrLessonId,userId);
     }
+
+    @CrossOrigin("*")
+    @RequestMapping(value ="answer",method = RequestMethod.POST)
+    public JsonResultEntity postAnswer(@RequestParam("question_type") String questionType, @RequestParam("question_id") int questionId, @RequestParam("user_id") int userId, @RequestParam("user_answer") String userAnswer) throws Exception {
+        return questionService.answerQuestion(questionType,questionId,userId,userAnswer);
+    }
+
 
 }
