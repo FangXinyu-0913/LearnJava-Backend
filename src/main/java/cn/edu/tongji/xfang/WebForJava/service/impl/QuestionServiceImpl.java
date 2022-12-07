@@ -1,9 +1,6 @@
 package cn.edu.tongji.xfang.WebForJava.service.impl;
 
-import cn.edu.tongji.xfang.WebForJava.Repository.AnswerSituationEntityRepository;
-import cn.edu.tongji.xfang.WebForJava.Repository.ChoiceQuestionEntityRepository;
-import cn.edu.tongji.xfang.WebForJava.Repository.KnowledgeEntityRepository;
-import cn.edu.tongji.xfang.WebForJava.Repository.ShortAnswerQuestionEntityRepository;
+import cn.edu.tongji.xfang.WebForJava.Repository.*;
 import cn.edu.tongji.xfang.WebForJava.models.ChoiceQuestionEntity;
 import cn.edu.tongji.xfang.WebForJava.models.JsonResultEntity;
 import cn.edu.tongji.xfang.WebForJava.models.ShortAnswerQuestionEntity;
@@ -36,6 +33,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Resource
     AnswerSituationEntityRepository answerSituationEntityRepository;
+
+    @Resource
+    ChaptersEntityRepository chaptersEntityRepository;
 
     @Override
     public JsonResultEntity getRelatedQuestion(int corrKnowledgeId,int userId) {
@@ -161,6 +161,31 @@ public class QuestionServiceImpl implements QuestionService {
         }
         return message;
 
+    }
+
+    @Override
+    public JsonResultEntity getUserChapterQuestionInfoByLesson(int corrLessonId,int userId) {
+        JsonResultEntity message = new JsonResultEntity();
+        try {
+            List<Map<String,Integer>> chapterQuestionList  = new ArrayList<>();
+            List<Integer> chapterIdList = chaptersEntityRepository.findAllChapterIdByLessonId(corrLessonId);
+            for(Integer chapterid:chapterIdList){
+                Map<String,Integer> temp = new HashMap();
+                temp.put("chapter_id",chapterid);
+                temp.put("total_question_num",choiceQuestionEntityRepository.findQueNumByCorrChapterId(chapterid)+shortAnswerQuestionEntityRepository.findQueNumByCorrChapterId(chapterid));
+                temp.put("already_done_question_num",shortAnswerQuestionEntityRepository.findShortAnswerQuestionEntitiesByChapter(chapterid,userId,"short_answer_question").size()+choiceQuestionEntityRepository.findChoiceQuestionEntitiesByChapter(chapterid,userId,"choice_question").size());
+                temp.put("not_done_question_num",temp.get("total_question_num")-temp.get("already_done_question_num"));
+                chapterQuestionList.add(temp);
+            }
+            message.data.put("data",chapterQuestionList);
+            message.errorCode = 200;
+            message.status = true;
+        }catch (Exception e) {
+            message.status = false;
+            message.errorCode = 300;
+            message.data.put("error", "题目信息获取错误");
+        }
+        return message;
     }
 
 }

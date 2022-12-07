@@ -28,5 +28,7 @@ public interface QuestionService {
     JsonResultEntity getRelatedQuestionByChapter(int corrChapterId,int userId);
 
 
+    JsonResultEntity getUserChapterQuestionInfoByLesson(int corrLessonId,int userId);
+
 
 }

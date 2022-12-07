@@ -58,5 +58,6 @@ public interface ShortAnswerQuestionEntityRepository extends JpaRepository<Short
      */
     List<ShortAnswerQuestionEntity> findShortAnswerQuestionEntitiesByCorrChapterId(int chapter_id);
 
-
+    @Query(value = "select count(*) from short_answer_question where corr_chapter_id = ?1", nativeQuery = true)
+    Integer findQueNumByCorrChapterId(int chapter_id);
 }

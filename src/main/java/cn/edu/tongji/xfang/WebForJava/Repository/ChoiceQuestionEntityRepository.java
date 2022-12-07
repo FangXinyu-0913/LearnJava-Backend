@@ -60,4 +60,7 @@ public interface ChoiceQuestionEntityRepository extends JpaRepository<ChoiceQues
      */
     List<ChoiceQuestionEntity> findChoiceQuestionEntitiesByCorrChapterId(int chapter_id);
 
+
+    @Query(value = "select count(*) from choice_question where corr_chapter_id = ?1", nativeQuery = true)
+    Integer findQueNumByCorrChapterId(int chapter_id);
 }

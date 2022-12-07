@@ -13,4 +13,8 @@ import java.util.List;
 public interface ChaptersEntityRepository extends JpaRepository<ChaptersEntity, Integer> {
     @Query(value = "select * from chapters where corr_lesson_id = ?1", nativeQuery = true)
     List<ChaptersEntity> findChaptersEntityByLessonId(int lesson_id);
+
+    @Query(value = "select chapter_id from chapters where corr_lesson_id = ?1", nativeQuery = true)
+    List<Integer> findAllChapterIdByLessonId(int lesson_id);
+
 }

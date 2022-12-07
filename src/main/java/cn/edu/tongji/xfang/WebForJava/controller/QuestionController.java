@@ -34,4 +34,10 @@ public class QuestionController {
         return questionService.getRelatedQuestionByChapter(corrChapterId,userId);
     }
 
+    @CrossOrigin("*")
+    @RequestMapping("lesson")
+    public JsonResultEntity getQueInfoByLesson(@RequestParam("lesson_id") int corrLessonId, @RequestParam("user_id") int userId) throws Exception {
+        return questionService.getUserChapterQuestionInfoByLesson(corrLessonId,userId);
+    }
+
 }
