@@ -17,4 +17,10 @@ public interface ChaptersEntityRepository extends JpaRepository<ChaptersEntity, 
     @Query(value = "select chapter_id from chapters where corr_lesson_id = ?1", nativeQuery = true)
     List<Integer> findAllChapterIdByLessonId(int lesson_id);
 
+    @Query(value = "select * from chapters where chapter_id = ?1", nativeQuery = true)
+    ChaptersEntity findChapterByChapterId(int chapter_id);
+
+    @Query(value = "select chapter_title from chapters where chapter_id = ?1", nativeQuery = true)
+    String findChapterNameByChapterId(int chapter_id);
+
 }

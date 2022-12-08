@@ -32,6 +32,9 @@ public class AnswerSituationEntity {
     @Basic
     @Column(name = "teacher_id")
     private int teacherId;
+    @Basic
+    @Column(name = "user_answer")
+    private String userAnswer;
 
     public int getId() {
         return id;
@@ -77,6 +80,10 @@ public class AnswerSituationEntity {
         return teacherId;
     }
 
+    public void setTeacherId(Integer teacherId) {
+        this.teacherId = teacherId;
+    }
+
     public void setTeacherId(int teacherId) {
         this.teacherId = teacherId;
     }
@@ -92,5 +99,13 @@ public class AnswerSituationEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, answerTime, questionType, questionId, userId, teacherId);
+    }
+
+    public String getUserAnswer() {
+        return userAnswer;
+    }
+
+    public void setUserAnswer(String userAnswer) {
+        this.userAnswer = userAnswer;
     }
 }

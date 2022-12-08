@@ -18,6 +18,7 @@ public interface ChoiceQuestionEntityRepository extends JpaRepository<ChoiceQues
      * @param question_id 题目号
      * @return 返回题目信息
      */
+    @Query(value = "select * from choice_question where choice_question_id = ?1", nativeQuery = true)
     ChoiceQuestionEntity findChoiceQuestionEntityByChoiceQuestionId(int question_id);
     /**
      * 根据知识点查询题目信息

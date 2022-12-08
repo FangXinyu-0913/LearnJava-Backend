@@ -26,5 +26,14 @@ public interface AnswerSituationEntityRepository extends JpaRepository<AnswerSit
     @Modifying
     @Transactional(rollbackFor = Exception.class)
     @Query(value = "insert into answer_situation(question_type,question_id,user_id,user_answer) values(?1,?2,?3,?4)",nativeQuery = true)
-    int userAnswerQuestion(String questionType,int questionId,int UserId,String answer);
+    int userAnswerQuestion(String question_type,int question_id,int user_id,String answer);
+
+    /**
+     * 获取用户所有答题记录
+     * @param user_id
+     * @return List<AnswerSituationEntity>
+     */
+    @Query(value ="select * from answer_situation where user_id = ?1", nativeQuery = true)
+    List<AnswerSituationEntity> findAllAnswerRecordByUserId(int user_id);
+
 }

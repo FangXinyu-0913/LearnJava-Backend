@@ -37,6 +37,9 @@ public class QuestionServiceImpl implements QuestionService {
     @Resource
     ChaptersEntityRepository chaptersEntityRepository;
 
+    @Resource
+    LessonsEntityRepository lessonsEntityRepository;
+
     @Override
     public JsonResultEntity getRelatedQuestion(int corrKnowledgeId,int userId) {
         JsonResultEntity message = new JsonResultEntity();
@@ -167,16 +170,20 @@ public class QuestionServiceImpl implements QuestionService {
     public JsonResultEntity getUserChapterQuestionInfoByLesson(int corrLessonId,int userId) {
         JsonResultEntity message = new JsonResultEntity();
         try {
-            List<Map<String,Integer>> chapterQuestionList  = new ArrayList<>();
+            List<Map<String,Object>> chapterQuestionList  = new ArrayList<>();
             List<Integer> chapterIdList = chaptersEntityRepository.findAllChapterIdByLessonId(corrLessonId);
             for(Integer chapterid:chapterIdList){
-                Map<String,Integer> temp = new HashMap();
+                Map<String,Object> temp = new HashMap();
+                temp.put("lesson_name",lessonsEntityRepository.findLessonTitleByLessonId(corrLessonId));
                 temp.put("chapter_id",chapterid);
+                temp.put("chapter_name",chaptersEntityRepository.findChapterNameByChapterId(chapterid));
                 temp.put("total_question_num",choiceQuestionEntityRepository.findQueNumByCorrChapterId(chapterid)+shortAnswerQuestionEntityRepository.findQueNumByCorrChapterId(chapterid));
                 temp.put("already_done_question_num",shortAnswerQuestionEntityRepository.findShortAnswerQuestionEntitiesByChapter(chapterid,userId,"short_answer_question").size()+choiceQuestionEntityRepository.findChoiceQuestionEntitiesByChapter(chapterid,userId,"choice_question").size());
-                temp.put("not_done_question_num",temp.get("total_question_num")-temp.get("already_done_question_num"));
+                temp.put("not_done_question_num",(Integer)temp.get("total_question_num")-(Integer)temp.get("already_done_question_num"));
+                temp.put("finish_rate",((Integer)temp.get("already_done_question_num")*100/(Integer)temp.get("total_question_num")));
                 chapterQuestionList.add(temp);
             }
+
             message.data.put("data",chapterQuestionList);
             message.errorCode = 200;
             message.status = true;
