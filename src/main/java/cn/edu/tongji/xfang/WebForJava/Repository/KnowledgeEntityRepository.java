@@ -2,6 +2,7 @@ package cn.edu.tongji.xfang.WebForJava.Repository;
 
 import cn.edu.tongji.xfang.WebForJava.models.KnowledgeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -20,4 +21,7 @@ public interface KnowledgeEntityRepository extends JpaRepository<KnowledgeEntity
      * @return 返回知识点信息
      */
     List<KnowledgeEntity> findKnowledgeEntityByCorrChapterIdAndAndCorrLessonId(int chapter_id,int lesson_id);
+
+    @Query(value = "select count(*) from knowledge where corr_chapter_id = ?1 and corr_lesson_id = ?2",nativeQuery = true)
+    Integer countKnowledgeNumByCorrChapterIdAndAndCorrLessonId(int chapter_id,int lesson_id);
 }

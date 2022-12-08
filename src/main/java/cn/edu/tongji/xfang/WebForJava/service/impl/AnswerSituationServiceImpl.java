@@ -48,22 +48,16 @@ public class AnswerSituationServiceImpl implements AnswerSituationService {
         try{
             List<Map<String,Object>> returnASList  = new ArrayList<>();
             List<AnswerSituationEntity> ASList = answerSituationEntityRepository.findAllAnswerRecordByUserId(userId);
-            System.out.println(ASList.size());
             for(AnswerSituationEntity AS:ASList){
                 Map<String, Object> temp = new HashMap();
                 temp.put("question_id",AS.getQuestionId());
                 int questionId = AS.getQuestionId();
-                System.out.println("questionId"+ questionId);
                 temp.put("question_type",AS.getQuestionType());
                 temp.put("user_answer",AS.getUserAnswer());
                 temp.put("answer_time",AS.getAnswerTime());
-                System.out.println(AS.getQuestionType());
-                System.out.println(AS.getQuestionId());
                 try{
                     if(temp.get("question_type").equals("choice_question") ) {
-                        System.out.println("choice_question");
                         ChoiceQuestionEntity CQE = choiceQuestionEntityRepository.findChoiceQuestionEntityByChoiceQuestionId(questionId);
-                        System.out.println("success?");
                         temp.put("question_content",CQE.getQuestionContent());
                         temp.put("lesson_id",CQE.getCorrLessonId());
                         temp.put("chapter_id",CQE.getCorrChapterId());
@@ -78,7 +72,6 @@ public class AnswerSituationServiceImpl implements AnswerSituationService {
                     System.out.println("inter11");
                     message.data.put("error1", e.getMessage());
                 }
-                System.out.println("inter2");
                 temp.put("lesson_name",lessonsEntityRepository.findByLessonId((Integer) temp.get("lesson_id")).getLessonTitle());
                 temp.put("chapter_name",chaptersEntityRepository.findChapterByChapterId((Integer) temp.get("chapter_id")).getChapterTitle());
                 try {
@@ -86,11 +79,10 @@ public class AnswerSituationServiceImpl implements AnswerSituationService {
                 }catch (Exception e){
                     temp.put("score","未批改");
                 }
-                System.out.println("final");
-                System.out.println(temp);
+
                 returnASList.add(temp);
             }
-            System.out.println(returnASList);
+
             message.data.put("data", returnASList);
             message.errorCode = 200;
             message.status = true;

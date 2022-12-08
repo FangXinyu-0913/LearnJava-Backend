@@ -25,7 +25,7 @@ public interface KnowledgeService {
      * @param lesson_id 课程id
      * @return 返回全部知识点信息
      */
-    JsonResultEntity getKnowledgefromChapterAndLesson(int lesson_id,int chapter_id) throws Exception;
+    JsonResultEntity getKnowledgefromChapterAndLesson(int lesson_id,int chapter_id,int user_id) throws Exception;
 
 
     /**
@@ -34,4 +34,6 @@ public interface KnowledgeService {
      * @return 返回全部知识点信息
      */
     JsonResultEntity getChapterfromLesson(int lesson_id) throws Exception;
+
+
 }

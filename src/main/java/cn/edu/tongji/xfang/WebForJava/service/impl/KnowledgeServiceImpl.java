@@ -2,12 +2,17 @@ package cn.edu.tongji.xfang.WebForJava.service.impl;
 
 import cn.edu.tongji.xfang.WebForJava.Repository.ChaptersEntityRepository;
 import cn.edu.tongji.xfang.WebForJava.Repository.KnowledgeEntityRepository;
+import cn.edu.tongji.xfang.WebForJava.Repository.LearnKnowledgeEntityRepository;
 import cn.edu.tongji.xfang.WebForJava.models.JsonResultEntity;
 import cn.edu.tongji.xfang.WebForJava.models.KnowledgeEntity;
 import cn.edu.tongji.xfang.WebForJava.service.KnowledgeService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @title: Knowledge
@@ -16,22 +21,34 @@ import javax.annotation.Resource;
  * @Version 1.0
  */
 @Service
-public class KnowledgeImpl implements KnowledgeService {
+public class KnowledgeServiceImpl implements KnowledgeService {
     @Resource
     ChaptersEntityRepository chaptersEntityRepository;
     @Resource
     KnowledgeEntityRepository knowledgeEntityRepository;
-
+    @Resource
+    LearnKnowledgeEntityRepository learnKnowledgeEntityRepository;
     @Override
     public KnowledgeEntity getKnowledgeInfo(int knowledge_id) throws Exception {
         return knowledgeEntityRepository.findKnowledgeEntityByknowledgeId(knowledge_id);
     }
 
     @Override
-    public JsonResultEntity getKnowledgefromChapterAndLesson(int lesson_id, int chapter_id) throws Exception {
+    public JsonResultEntity getKnowledgefromChapterAndLesson(int lesson_id, int chapter_id,int user_id) throws Exception {
         JsonResultEntity message = new JsonResultEntity();
         try {
-            message.data.put("knowledge", knowledgeEntityRepository.findKnowledgeEntityByCorrChapterIdAndAndCorrLessonId(chapter_id,lesson_id));
+            List<KnowledgeEntity> KEList = knowledgeEntityRepository.findKnowledgeEntityByCorrChapterIdAndAndCorrLessonId(chapter_id,lesson_id);
+            List<Map<String,Object>> KEMapList = new ArrayList<>();
+            for(KnowledgeEntity KE : KEList){
+                Map<String,Object> temp = new HashMap<>();
+                temp.put("knowledge_id", KE.getKnowledgeId());
+                temp.put("knowledge_content",KE.getKnowledgeContent());
+                temp.put("corr_chapter_id",KE.getCorrChapterId());
+                temp.put("corr_lesson_id",KE.getCorrLessonId());
+                temp.put("already_learned",learnKnowledgeEntityRepository.findLearnKnowledgeByUserIdAndKnowledgeId(user_id,KE.getKnowledgeId()).size());
+                KEMapList.add(temp);
+            }
+            message.data.put("knowledge", KEMapList);
             message.status = true;
             message.errorCode = 200;
         } catch (Exception e) {

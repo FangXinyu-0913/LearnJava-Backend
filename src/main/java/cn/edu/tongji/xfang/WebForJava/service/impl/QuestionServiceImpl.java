@@ -183,7 +183,6 @@ public class QuestionServiceImpl implements QuestionService {
                 temp.put("finish_rate",((Integer)temp.get("already_done_question_num")*100/(Integer)temp.get("total_question_num")));
                 chapterQuestionList.add(temp);
             }
-
             message.data.put("data",chapterQuestionList);
             message.errorCode = 200;
             message.status = true;
