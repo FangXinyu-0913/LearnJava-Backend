@@ -2,10 +2,7 @@ package cn.edu.tongji.xfang.WebForJava.controller;
 
 import cn.edu.tongji.xfang.WebForJava.models.JsonResultEntity;
 import cn.edu.tongji.xfang.WebForJava.service.LessonService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -31,6 +28,12 @@ public class LessonController {
     @RequestMapping("selected")
     public JsonResultEntity getSelectedLesson(@RequestParam("student_id") int student_id) throws Exception {
         return lessonService.getChooseLessons(student_id);
+    }
+
+    @CrossOrigin("*")
+    @RequestMapping(value = "post",method = RequestMethod.POST)
+    public JsonResultEntity addLesson(@RequestParam("lesson_title") String lesson_title, @RequestParam("lesson_content") String lesson_content) throws Exception {
+        return lessonService.addLessons(lesson_title, lesson_content);
     }
 
 }

@@ -95,4 +95,99 @@ public class AnswerSituationServiceImpl implements AnswerSituationService {
         return message;
     }
 
+    public JsonResultEntity findAllAnswerRecord(){
+        JsonResultEntity message = new JsonResultEntity();
+        try{
+            List<AnswerSituationEntity> JudgedList = answerSituationEntityRepository.findAllJudgedAnswerRecord();
+            List<AnswerSituationEntity> UnJudgedList = answerSituationEntityRepository.findAllUnJudgedAnswerRecord();
+            List<Map<String,Object>> returnJudgedList  = new ArrayList<>();
+            List<Map<String,Object>> returnUnJudgedList  = new ArrayList<>();
+            for(AnswerSituationEntity UnjudgedAS:UnJudgedList){
+                Map<String,Object> returnMap = new HashMap<>();
+                int question_id = UnjudgedAS.getQuestionId();
+                String question_type = UnjudgedAS.getQuestionType();
+                if(question_type.equals("choice_question")){
+                    ChoiceQuestionEntity CQE = choiceQuestionEntityRepository.findChoiceQuestionEntityByChoiceQuestionId(question_id);
+
+                    returnMap.put("lesson_id",CQE.getCorrLessonId());
+                    returnMap.put("lesson_title",lessonsEntityRepository.findByLessonId(CQE.getCorrLessonId()).getLessonTitle());
+                    returnMap.put("chapter_id",CQE.getCorrChapterId());
+                    returnMap.put("chapter_title",chaptersEntityRepository.findChapterByChapterId(CQE.getCorrChapterId()).getChapterTitle());
+                    returnMap.put("question_content",CQE.getQuestionContent());
+                    returnMap.put("reference_answer",CQE.getQuestionAnswer());
+                    returnMap.put("score_for_this_question",CQE.getScore());
+
+                }
+                else if(question_type.equals("short_answer_question")){
+                    ShortAnswerQuestionEntity SAQE = shortAnswerQuestionEntityRepository.findShortAnswerQuestionEntityByShortAnswerQuestionId(question_id);
+
+                    returnMap.put("lesson_id",SAQE.getCorrLessonId());
+                    returnMap.put("lesson_title",lessonsEntityRepository.findByLessonId(SAQE.getCorrLessonId()).getLessonTitle());
+                    returnMap.put("chapter_id",SAQE.getCorrChapterId());
+                    returnMap.put("chapter_title",chaptersEntityRepository.findChapterByChapterId(SAQE.getCorrChapterId()).getChapterTitle());
+                    returnMap.put("question_content",SAQE.getQuestionContent());
+                    returnMap.put("reference_answer",SAQE.getReferenceAnswer());
+                    returnMap.put("score_for_this_question",SAQE.getScore());
+                }
+                returnMap.put("user_answer",UnjudgedAS.getUserAnswer());
+                returnMap.put("user_id",UnjudgedAS.getUserId());
+                returnMap.put("answer_time",UnjudgedAS.getAnswerTime());
+                returnMap.put("answer_situation_id",UnjudgedAS.getId());
+                try {
+                    returnMap.put("score",judgeInfoEntityRepository.findScoreByAnswerSituationId(UnjudgedAS.getId()));
+                }catch (Exception e){
+                    returnMap.put("score","未批改");
+                }
+                returnUnJudgedList.add(returnMap);
+            }
+            for(AnswerSituationEntity JudgedAS:JudgedList) {
+                Map<String, Object> returnMap = new HashMap<>();
+                int question_id = JudgedAS.getQuestionId();
+                String question_type = JudgedAS.getQuestionType();
+                if (question_type.equals("choice_question")) {
+                    ChoiceQuestionEntity CQE = choiceQuestionEntityRepository.findChoiceQuestionEntityByChoiceQuestionId(question_id);
+
+                    returnMap.put("lesson_id", CQE.getCorrLessonId());
+                    returnMap.put("lesson_title", lessonsEntityRepository.findByLessonId(CQE.getCorrLessonId()).getLessonTitle());
+                    returnMap.put("chapter_id", CQE.getCorrChapterId());
+                    returnMap.put("chapter_title", chaptersEntityRepository.findChapterByChapterId(CQE.getCorrChapterId()).getChapterTitle());
+                    returnMap.put("question_content", CQE.getQuestionContent());
+                    returnMap.put("reference_answer", CQE.getQuestionAnswer());
+                    returnMap.put("score_for_this_question", CQE.getScore());
+
+                } else if (question_type.equals("short_answer_question")) {
+                    ShortAnswerQuestionEntity SAQE = shortAnswerQuestionEntityRepository.findShortAnswerQuestionEntityByShortAnswerQuestionId(question_id);
+
+                    returnMap.put("lesson_id", SAQE.getCorrLessonId());
+                    returnMap.put("lesson_title", lessonsEntityRepository.findByLessonId(SAQE.getCorrLessonId()).getLessonTitle());
+                    returnMap.put("chapter_id", SAQE.getCorrChapterId());
+                    returnMap.put("chapter_title", chaptersEntityRepository.findChapterByChapterId(SAQE.getCorrChapterId()).getChapterTitle());
+                    returnMap.put("question_content", SAQE.getQuestionContent());
+                    returnMap.put("reference_answer", SAQE.getReferenceAnswer());
+                    returnMap.put("score_for_this_question", SAQE.getScore());
+                }
+                returnMap.put("user_answer", JudgedAS.getUserAnswer());
+                returnMap.put("user_id", JudgedAS.getUserId());
+                returnMap.put("answer_time", JudgedAS.getAnswerTime());
+                returnMap.put("answer_situation_id", JudgedAS.getId());
+                try {
+                    returnMap.put("score", judgeInfoEntityRepository.findScoreByAnswerSituationId(JudgedAS.getId()));
+                } catch (Exception e) {
+                    returnMap.put("score", "未批改");
+                }
+                returnJudgedList.add(returnMap);
+            }
+            message.data.put("JudgedList",returnJudgedList);
+            message.data.put("UnJudgedList",returnUnJudgedList);
+            message.errorCode = 200;
+            message.status = true;
+        }catch (Exception e) {
+            message.data.put("error", e.getMessage());
+            message.errorCode = 300;
+            message.status = false;
+            return message;
+        }
+        return message;
+    }
+
 }

@@ -3,10 +3,7 @@ package cn.edu.tongji.xfang.WebForJava.controller;
 import cn.edu.tongji.xfang.WebForJava.models.JsonResultEntity;
 import cn.edu.tongji.xfang.WebForJava.service.KnowledgeService;
 import cn.edu.tongji.xfang.WebForJava.service.LearnService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -49,6 +46,12 @@ public class KnowledgeController {
     @RequestMapping("learnRecord")
     public JsonResultEntity getlearnKnowledgeRecord(@RequestParam("lesson_id") int lesson_id, @RequestParam("user_id") int user_id)  throws Exception {
         return learnService.getLearnKnowledgeRecordByLessonAndUser(user_id,lesson_id);
+    }
+
+    @CrossOrigin("*")
+    @RequestMapping(value = "post",method = RequestMethod.POST)
+    public JsonResultEntity addKnowledge(@RequestParam("lesson_id") int lesson_id, @RequestParam("chapter_id") int chapter_id, @RequestParam("knowledge_content") String knowledge_content) throws Exception {
+        return knowledgeService.addKnowledge(lesson_id,chapter_id,knowledge_content);
     }
 
 }

@@ -4,6 +4,8 @@ import cn.edu.tongji.xfang.WebForJava.models.ChoiceQuestionEntity;
 import cn.edu.tongji.xfang.WebForJava.models.ShortAnswerQuestionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -60,4 +62,9 @@ public interface ShortAnswerQuestionEntityRepository extends JpaRepository<Short
 
     @Query(value = "select count(*) from short_answer_question where corr_chapter_id = ?1", nativeQuery = true)
     Integer findQueNumByCorrChapterId(int chapter_id);
+
+    @Modifying
+    @Transactional(rollbackFor = Exception.class)
+    @Query(value = "insert into short_answer_question(corr_lesson_id, corr_chapter_id,corr_knowledge_id,question_content,reference_answer,score) values(?1,?2,?3,?4,?5,?6)", nativeQuery = true)
+    Integer addShortAnswerQuestion(int lesson_id,int chapter_id,int knowledge_id,String question_content,String reference_answer,int score);
 }

@@ -43,5 +43,19 @@ public class QuestionController {
         return questionService.answerQuestion(questionType,questionId,userId,userAnswer);
     }
 
+    @CrossOrigin("*")
+    @RequestMapping(value ="post",method = RequestMethod.POST)
+    public JsonResultEntity postQuestion(@RequestParam("question_type") String question_type, @RequestParam("lesson_id") int lesson_id, @RequestParam("chapter_id") int chapter_id, @RequestParam("question_content") String question_content, @RequestParam("reference_answer") String reference_answer, @RequestParam("score") int score, @RequestParam("choice_A") String choice_A,@RequestParam("choice_B") String choice_B,@RequestParam("choice_C") String choice_C,@RequestParam("choice_D") String choice_D) throws Exception {
+        if(question_type.equals("choice_question")) {
+            return questionService.addChoiceQuestion(lesson_id,chapter_id,question_content, reference_answer, score, choice_A,choice_B,choice_C, choice_D);
+        }
+        else{
+            return questionService.addShortAnswerQuestion(lesson_id, chapter_id, question_content, reference_answer, score);
+        }
+
+    }
+
+
+
 
 }

@@ -1,6 +1,7 @@
 package cn.edu.tongji.xfang.WebForJava.service.impl;
 
 import cn.edu.tongji.xfang.WebForJava.Repository.ChooseLessonsEntityRepository;
+import cn.edu.tongji.xfang.WebForJava.Repository.LessonsEntityRepository;
 import cn.edu.tongji.xfang.WebForJava.models.JsonResultEntity;
 import cn.edu.tongji.xfang.WebForJava.models.LessonsEntity;
 import cn.edu.tongji.xfang.WebForJava.service.LessonService;
@@ -19,6 +20,9 @@ public class LessonServiceImpl implements LessonService {
 
     @Resource
     ChooseLessonsEntityRepository chooseLessonsEntityRepository;
+
+    @Resource
+    LessonsEntityRepository lessonsEntityRepository;
     @Override
     /**
      * 课程信息查询
@@ -55,6 +59,21 @@ public class LessonServiceImpl implements LessonService {
         JsonResultEntity message = new JsonResultEntity();
         try {
             message.data.put("lessons", chooseLessonsEntityRepository.findAll());
+            message.status = true;
+            message.errorCode = 200;
+        } catch (Exception e) {
+            message.data.put("error", e.getMessage());
+            message.errorCode = 300;
+            message.status = false;
+            return message;
+        }
+        return message;
+    }
+
+    public JsonResultEntity addLessons(String lessonTitle, String lessonContent){
+        JsonResultEntity message = new JsonResultEntity();
+        try {
+            int symbol = lessonsEntityRepository.addLesson(lessonTitle, lessonContent);
             message.status = true;
             message.errorCode = 200;
         } catch (Exception e) {

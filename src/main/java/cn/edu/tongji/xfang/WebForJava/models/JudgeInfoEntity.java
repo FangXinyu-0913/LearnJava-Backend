@@ -1,6 +1,7 @@
 package cn.edu.tongji.xfang.WebForJava.models;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
@@ -25,6 +26,9 @@ public class JudgeInfoEntity {
     @Basic
     @Column(name = "answer_situation_id")
     private Integer answerSituationId;
+    @Basic
+    @Column(name = "judge_time")
+    private Timestamp judgeTime;
 
     public int getJudgeId() {
         return judgeId;
@@ -69,5 +73,13 @@ public class JudgeInfoEntity {
     @Override
     public int hashCode() {
         return Objects.hash(judgeId, teacherId, score, answerSituationId);
+    }
+
+    public Timestamp getJudgeTime() {
+        return judgeTime;
+    }
+
+    public void setJudgeTime(Timestamp judgeTime) {
+        this.judgeTime = judgeTime;
     }
 }

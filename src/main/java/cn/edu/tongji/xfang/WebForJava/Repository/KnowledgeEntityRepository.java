@@ -2,7 +2,9 @@ package cn.edu.tongji.xfang.WebForJava.Repository;
 
 import cn.edu.tongji.xfang.WebForJava.models.KnowledgeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,4 +26,15 @@ public interface KnowledgeEntityRepository extends JpaRepository<KnowledgeEntity
 
     @Query(value = "select count(*) from knowledge where corr_chapter_id = ?1 and corr_lesson_id = ?2",nativeQuery = true)
     Integer countKnowledgeNumByCorrChapterIdAndAndCorrLessonId(int chapter_id,int lesson_id);
+
+    /**
+     * 添加知识点入库
+     * @param corr_chapter_id 章节号
+     * @param corr_lesson_id 课程号
+     * @param knowledge_content 知识点内容
+     */
+    @Modifying
+    @Transactional(rollbackFor = Exception.class)
+    @Query(value = "insert into knowledge(corr_chapter_id,corr_lesson_id,knowledge_content) values(?1,?2,?3)", nativeQuery = true)
+    int addKnowledge(int corr_chapter_id,int corr_lesson_id,String knowledge_content);
 }

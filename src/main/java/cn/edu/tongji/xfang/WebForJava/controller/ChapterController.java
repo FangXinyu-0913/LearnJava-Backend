@@ -2,10 +2,7 @@ package cn.edu.tongji.xfang.WebForJava.controller;
 
 import cn.edu.tongji.xfang.WebForJava.models.JsonResultEntity;
 import cn.edu.tongji.xfang.WebForJava.service.KnowledgeService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -25,5 +22,11 @@ public class ChapterController {
     @RequestMapping("fromLesson")
     public JsonResultEntity getChapterfromLesson(@RequestParam("lesson_id") int lesson_id) throws Exception {
         return knowledgeService.getChapterfromLesson(lesson_id);
+    }
+
+    @CrossOrigin("*")
+    @RequestMapping(value = "post",method = RequestMethod.POST)
+    public JsonResultEntity addChapter(@RequestParam("lesson_id") int lesson_id,@RequestParam("chapter_title") String chapter_title,@RequestParam("chapter_content") String chapter_content) throws Exception {
+        return knowledgeService.addChapter(lesson_id,chapter_title,chapter_content);
     }
 }

@@ -29,5 +29,13 @@ public interface LessonService {
      */
     JsonResultEntity getLessons() throws Exception;
 
+    /**
+     * 添加课程入库
+     * @param lessonTitle 课程名
+     * @param lessonContent 课程内容
+     * @return 返回添加结果
+     */
+    JsonResultEntity addLessons(String lessonTitle, String lessonContent) throws Exception;
+
 
 }

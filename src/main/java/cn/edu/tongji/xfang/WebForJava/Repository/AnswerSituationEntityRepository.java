@@ -36,4 +36,20 @@ public interface AnswerSituationEntityRepository extends JpaRepository<AnswerSit
     @Query(value ="select * from answer_situation where user_id = ?1", nativeQuery = true)
     List<AnswerSituationEntity> findAllAnswerRecordByUserId(int user_id);
 
+    @Query(value = "select * from answer_situation where teacher_id = -1",nativeQuery = true)
+    List<AnswerSituationEntity> findAllUnJudgedAnswerRecord();
+
+    @Query(value = "select * from answer_situation where teacher_id != -1",nativeQuery = true)
+    List<AnswerSituationEntity> findAllJudgedAnswerRecord();
+
+    /**
+     * 更新答题记录中的教师id
+     * @param teacher_id
+     * @param answer_situation_id
+     * @return
+     */
+    @Modifying
+    @Transactional(rollbackFor = Exception.class)
+    @Query(value = "update answer_situation set teacher_id = ?1 where id = ?2",nativeQuery = true)
+    int updateTeacherId(int teacher_id,int answer_situation_id);
 }

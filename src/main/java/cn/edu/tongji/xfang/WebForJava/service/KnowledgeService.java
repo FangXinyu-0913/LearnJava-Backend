@@ -35,5 +35,19 @@ public interface KnowledgeService {
      */
     JsonResultEntity getChapterfromLesson(int lesson_id) throws Exception;
 
+    /**
+     * 添加章节知识点入库
+     * @param lesson_id 课程id
+     * @param chapter_title 章节标题
+     * @param chapter_content 章节内容
+     */
+    JsonResultEntity addChapter(int lesson_id,String chapter_title,String chapter_content) throws Exception;
 
+    /**
+     * 添加知识点入库
+     * @param lesson_id 课程id
+     * @param chapter_id 章节id
+     * @param knowledge_content 知识点内容
+     */
+    JsonResultEntity addKnowledge(int lesson_id,int chapter_id,String knowledge_content) throws Exception;
 }

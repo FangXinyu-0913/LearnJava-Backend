@@ -210,5 +210,41 @@ public class QuestionServiceImpl implements QuestionService {
         return message;
     }
 
+    @Override
+    public JsonResultEntity addShortAnswerQuestion(int lesson_id,int chapter_id,String question_content,String reference_answer,int score){
+        JsonResultEntity message = new JsonResultEntity();
+        try {
+            int knowledge_id = knowledgeEntityRepository.findKnowledgeEntityByCorrChapterIdAndAndCorrLessonId(chapter_id,lesson_id).get(0).getKnowledgeId();
+            shortAnswerQuestionEntityRepository.addShortAnswerQuestion(lesson_id,chapter_id,knowledge_id,question_content,reference_answer,score);
+            message.errorCode = 200;
+            message.status = true;
+            message.data.put("symbol", true);
+        } catch (Exception e) {
+            message.status = false;
+            message.errorCode = 300;
+            message.data.put("error", "添加失败！");
+        }
+        return message;
+    }
+
+    @Override
+    public JsonResultEntity addChoiceQuestion(int lesson_id,int chapter_id,String question_content,String reference_answer, int score,String choice_A,String choice_B,String choice_C,String choice_D){
+        JsonResultEntity message = new JsonResultEntity();
+        try {
+            int knowledge_id = knowledgeEntityRepository.findKnowledgeEntityByCorrChapterIdAndAndCorrLessonId(chapter_id,lesson_id).get(0).getKnowledgeId();
+            choiceQuestionEntityRepository.addChoiceQuestion(lesson_id,chapter_id,knowledge_id,question_content,choice_A,choice_B,choice_C,choice_D,reference_answer,score);
+            message.errorCode = 200;
+            message.status = true;
+            message.data.put("symbol", true);
+        } catch (Exception e) {
+            message.status = false;
+            message.errorCode = 300;
+            message.data.put("error", "添加失败！");
+        }
+        return message;
+    }
+
+
+
 
 }

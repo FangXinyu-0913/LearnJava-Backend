@@ -29,4 +29,6 @@ public interface AnswerSituationService {
      */
     JsonResultEntity findAllRecordsByUserId(int userId);
 
+    JsonResultEntity findAllAnswerRecord();
+
 }

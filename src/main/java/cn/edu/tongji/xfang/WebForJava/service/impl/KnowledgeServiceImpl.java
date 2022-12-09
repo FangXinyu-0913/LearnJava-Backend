@@ -75,4 +75,37 @@ public class KnowledgeServiceImpl implements KnowledgeService {
         }
         return message;
     }
+
+    @Override
+    public JsonResultEntity addChapter(int lesson_id,String chapter_title,String chapter_content) throws Exception{
+        JsonResultEntity message = new JsonResultEntity();
+        try {
+            chaptersEntityRepository.addChapter(lesson_id,chapter_title,chapter_content);
+            message.status = true;
+            message.errorCode = 200;
+        } catch (Exception e) {
+            message.data.put("error", e.getMessage());
+            message.errorCode = 300;
+            message.status = false;
+            return message;
+        }
+        return message;
+    }
+
+    @Override
+    public JsonResultEntity addKnowledge(int lesson_id,int chapter_id,String knowledge_content) throws Exception{
+        JsonResultEntity message = new JsonResultEntity();
+        try {
+            knowledgeEntityRepository.addKnowledge(chapter_id,lesson_id,knowledge_content);
+            message.status = true;
+            message.errorCode = 200;
+        } catch (Exception e) {
+            message.data.put("error", e.getMessage());
+            message.errorCode = 300;
+            message.status = false;
+            return message;
+        }
+        return message;
+    }
+
 }
