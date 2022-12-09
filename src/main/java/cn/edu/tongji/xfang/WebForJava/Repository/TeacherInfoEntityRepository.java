@@ -3,6 +3,9 @@ package cn.edu.tongji.xfang.WebForJava.Repository;
 import cn.edu.tongji.xfang.WebForJava.models.StudentInfoEntity;
 import cn.edu.tongji.xfang.WebForJava.models.TeacherInfoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Xinyu Fang
@@ -21,4 +24,9 @@ public interface TeacherInfoEntityRepository extends JpaRepository<TeacherInfoEn
      * @return 返回学生信息
      */
     TeacherInfoEntity findTeacherInfoEntityByTeacherName(String teacher_name);
+
+    @Modifying
+    @Transactional(rollbackFor = Exception.class)
+    @Query(value = "insert into teacher_info(teacher_name,teacher_password) values(?1,?2)", nativeQuery = true)
+    int addTeacher(String teacher_name, String teacher_password);
 }
