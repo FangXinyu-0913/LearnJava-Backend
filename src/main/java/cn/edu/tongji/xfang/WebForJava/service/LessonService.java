@@ -37,5 +37,7 @@ public interface LessonService {
      */
     JsonResultEntity addLessons(String lessonTitle, String lessonContent) throws Exception;
 
+    JsonResultEntity chooseLesson(int lessonId, int userId) throws Exception;
+
 
 }

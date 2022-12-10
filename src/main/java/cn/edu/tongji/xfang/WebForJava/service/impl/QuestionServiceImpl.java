@@ -40,6 +40,9 @@ public class QuestionServiceImpl implements QuestionService {
     @Resource
     LessonsEntityRepository lessonsEntityRepository;
 
+    @Resource
+    LearnKnowledgeEntityRepository learnKnowledgeEntityRepository;
+
     @Override
     public JsonResultEntity getRelatedQuestion(int corrKnowledgeId,int userId) {
         JsonResultEntity message = new JsonResultEntity();
@@ -180,7 +183,12 @@ public class QuestionServiceImpl implements QuestionService {
                 temp.put("total_question_num",choiceQuestionEntityRepository.findQueNumByCorrChapterId(chapterid)+shortAnswerQuestionEntityRepository.findQueNumByCorrChapterId(chapterid));
                 temp.put("already_done_question_num",shortAnswerQuestionEntityRepository.findShortAnswerQuestionEntitiesByChapter(chapterid,userId,"short_answer_question").size()+choiceQuestionEntityRepository.findChoiceQuestionEntitiesByChapter(chapterid,userId,"choice_question").size());
                 temp.put("not_done_question_num",(Integer)temp.get("total_question_num")-(Integer)temp.get("already_done_question_num"));
-                temp.put("finish_rate",((Integer)temp.get("already_done_question_num")*100/(Integer)temp.get("total_question_num")));
+                if((Integer)temp.get("total_question_num") == 0){
+                    temp.put("finish_rate",0);
+                }
+                else{
+                    temp.put("finish_rate",((Integer)temp.get("already_done_question_num")*100/(Integer)temp.get("total_question_num")));
+                }
                 chapterQuestionList.add(temp);
             }
             message.data.put("data",chapterQuestionList);
@@ -243,7 +251,27 @@ public class QuestionServiceImpl implements QuestionService {
         }
         return message;
     }
+    @Override
+    public JsonResultEntity giveRandomQuestion(int user_id){
+        JsonResultEntity message = new JsonResultEntity();
+        try {
+            List<Integer> learnedChapterIdList = learnKnowledgeEntityRepository.findLearnedChapterIdByUserId(user_id);
+            Integer random_chapter_id_1 = learnedChapterIdList.get((int)(Math.random()*learnedChapterIdList.size()));
+            Integer random_chapter_id_2 = learnedChapterIdList.get((int)(Math.random()*learnedChapterIdList.size()));
+            List<ShortAnswerQuestionEntity> notAnswer_SAQList = shortAnswerQuestionEntityRepository.findNotAnsweredShortAnswerQuestionEntitiesByChapter(random_chapter_id_1,user_id,"short_answer_question");
+            List<ChoiceQuestionEntity> notAnswer_CQList = choiceQuestionEntityRepository.findNotAnsweredChoiceQuestionEntitiesByChapter(random_chapter_id_2,user_id,"choice_question");
+            message.data.put("shortAnswerQuestionList",notAnswer_SAQList);
+            message.data.put("choiceQuestionList",notAnswer_CQList);
+            message.errorCode = 200;
+            message.status = true;
+        } catch (Exception e) {
+            message.status = false;
+            message.errorCode = 300;
+            message.data.put("error", "添加失败！");
+        }
+        return message;
 
+    }
 
 
 

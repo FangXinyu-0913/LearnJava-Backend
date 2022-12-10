@@ -55,6 +55,12 @@ public class QuestionController {
 
     }
 
+    @CrossOrigin("*")
+    @RequestMapping("test")
+    public JsonResultEntity giveRandomQuestion(@RequestParam("user_id") int user_id) throws Exception {
+        return questionService.giveRandomQuestion(user_id);
+    }
+
 
 
 

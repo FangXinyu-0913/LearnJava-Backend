@@ -31,6 +31,9 @@ public interface LearnKnowledgeEntityRepository extends JpaRepository<LearnKnowl
     @Query(value = "select count(*) from learn_knowledge where user_id = ?3 and lesson_id = ?2 and chapter_id =?1",nativeQuery = true)
     Integer countLearnKnowledgeNumByCorrChapterIdAndAndCorrLessonIdAndAndCorrUserId(int chapter_id,int lesson_id,int user_id);
 
+    @Query(value = "select chapter_id from learn_knowledge where user_id = ?1",nativeQuery = true)
+    List<Integer> findLearnedChapterIdByUserId(int userId);
+
 
 
 }

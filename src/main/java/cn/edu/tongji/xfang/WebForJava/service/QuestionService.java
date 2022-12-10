@@ -35,5 +35,5 @@ public interface QuestionService {
 
     JsonResultEntity addChoiceQuestion(int lesson_id,int chapter_id,String question_content,String reference_answer, int score,String choice_A,String choice_B,String choice_C,String choice_D);
 
-
+    JsonResultEntity giveRandomQuestion(int user_id);
 }

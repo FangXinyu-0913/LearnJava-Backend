@@ -36,4 +36,10 @@ public class LessonController {
         return lessonService.addLessons(lesson_title, lesson_content);
     }
 
+    @CrossOrigin("*")
+    @RequestMapping(value = "choose",method = RequestMethod.POST)
+    public JsonResultEntity chooseLesson(@RequestParam("student_id") int student_id, @RequestParam("lesson_id") int lesson_id) throws Exception {
+        return lessonService.chooseLesson(student_id, lesson_id);
+    }
+
 }

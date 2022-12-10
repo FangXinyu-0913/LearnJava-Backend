@@ -84,5 +84,20 @@ public class LessonServiceImpl implements LessonService {
         }
         return message;
     }
+    @Override
+    public JsonResultEntity chooseLesson(int lessonId, int userId) throws Exception{
+        JsonResultEntity message = new JsonResultEntity();
+        try {
+            int symbol = chooseLessonsEntityRepository.chooseLesson(userId,lessonId);
+            message.status = true;
+            message.errorCode = 200;
+        } catch (Exception e) {
+            message.data.put("error", e.getMessage());
+            message.errorCode = 300;
+            message.status = false;
+            return message;
+        }
+        return message;
+    }
 
 }
