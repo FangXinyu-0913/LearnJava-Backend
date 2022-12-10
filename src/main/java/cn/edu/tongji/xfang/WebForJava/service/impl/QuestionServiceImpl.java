@@ -260,8 +260,24 @@ public class QuestionServiceImpl implements QuestionService {
             Integer random_chapter_id_2 = learnedChapterIdList.get((int)(Math.random()*learnedChapterIdList.size()));
             List<ShortAnswerQuestionEntity> notAnswer_SAQList = shortAnswerQuestionEntityRepository.findNotAnsweredShortAnswerQuestionEntitiesByChapter(random_chapter_id_1,user_id,"short_answer_question");
             List<ChoiceQuestionEntity> notAnswer_CQList = choiceQuestionEntityRepository.findNotAnsweredChoiceQuestionEntitiesByChapter(random_chapter_id_2,user_id,"choice_question");
-            message.data.put("shortAnswerQuestionList",notAnswer_SAQList);
-            message.data.put("choiceQuestionList",notAnswer_CQList);
+            List<Map<String, Object>> returnSAQList = new ArrayList<>();
+            List<Map<String, Object>> returnCQList = new ArrayList<>();
+            for(ShortAnswerQuestionEntity SAQ:notAnswer_SAQList)
+            {
+                Map<String, Object> AnsweredSAQ = new HashMap<>();
+                AnsweredSAQ.put("detail",SAQ);
+                AnsweredSAQ.put("haveBeenAnswered",false);
+                returnSAQList.add(AnsweredSAQ);
+            }
+            for(ChoiceQuestionEntity CQ:notAnswer_CQList)
+            {
+                Map<String, Object> AnsweredCQ = new HashMap<>();
+                AnsweredCQ.put("detail",CQ);
+                AnsweredCQ.put("haveBeenAnswered",false);
+                returnCQList.add(AnsweredCQ);
+            }
+            message.data.put("shortAnswerQuestionList",returnSAQList);
+            message.data.put("choiceQuestionList",returnCQList);
             message.errorCode = 200;
             message.status = true;
         } catch (Exception e) {
