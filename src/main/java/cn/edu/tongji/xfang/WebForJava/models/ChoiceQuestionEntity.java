@@ -12,6 +12,54 @@ import java.util.Objects;
 @Entity
 @Table(name = "choice_question", schema = "LearnJava", catalog = "")
 public class ChoiceQuestionEntity {
+
+    public int getCorrLessonId() {
+        return corrLessonId;
+    }
+
+    public void setCorrLessonId(Integer corrLessonId) {
+        this.corrLessonId = corrLessonId;
+    }
+
+
+    public int getCorrKnowledgeId() {
+        return corrKnowledgeId;
+    }
+
+    public void setCorrKnowledgeId(Integer corrKnowledgeId) {
+        this.corrKnowledgeId = corrKnowledgeId;
+    }
+
+
+    public String getQuestionContent() {
+        return questionContent;
+    }
+
+
+    public void setQuestionContent(String questionContent) {
+        this.questionContent = questionContent;
+    }
+
+
+    public Integer getScore() {
+        return score;
+    }
+
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+
+    public Integer getCorrChapterId() {
+        return corrChapterId;
+    }
+
+
+    public void setCorrChapterId(Integer corrChapterId) {
+        this.corrChapterId = corrChapterId;
+    }
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "choice_question_id")
@@ -55,30 +103,6 @@ public class ChoiceQuestionEntity {
         this.choiceQuestionId = choiceQuestionId;
     }
 
-    public Integer getCorrLessonId() {
-        return corrLessonId;
-    }
-
-    public void setCorrLessonId(Integer corrLessonId) {
-        this.corrLessonId = corrLessonId;
-    }
-
-    public Integer getCorrKnowledgeId() {
-        return corrKnowledgeId;
-    }
-
-    public void setCorrKnowledgeId(Integer corrKnowledgeId) {
-        this.corrKnowledgeId = corrKnowledgeId;
-    }
-
-    public String getQuestionContent() {
-        return questionContent;
-    }
-
-    public void setQuestionContent(String questionContent) {
-        this.questionContent = questionContent;
-    }
-
     public String getQuestionAnswer() {
         return questionAnswer;
     }
@@ -119,26 +143,12 @@ public class ChoiceQuestionEntity {
         this.choiceD = choiceD;
     }
 
-    public Integer getScore() {
-        return score;
-    }
 
-    public void setScore(Integer score) {
-        this.score = score;
-    }
-
-    public Integer getCorrChapterId() {
-        return corrChapterId;
-    }
-
-    public void setCorrChapterId(Integer corrChapterId) {
-        this.corrChapterId = corrChapterId;
-    }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {return true;}
+        if (o == null || getClass() != o.getClass()) {return false;}
         ChoiceQuestionEntity that = (ChoiceQuestionEntity) o;
         return choiceQuestionId == that.choiceQuestionId && Objects.equals(corrLessonId, that.corrLessonId) && Objects.equals(corrKnowledgeId, that.corrKnowledgeId) && Objects.equals(questionContent, that.questionContent) && Objects.equals(questionAnswer, that.questionAnswer) && Objects.equals(choiceA, that.choiceA) && Objects.equals(choiceB, that.choiceB) && Objects.equals(choiceC, that.choiceC) && Objects.equals(choiceD, that.choiceD) && Objects.equals(score, that.score) && Objects.equals(corrChapterId, that.corrChapterId);
     }

@@ -1,5 +1,6 @@
 package cn.edu.tongji.xfang.WebForJava.Repository;
 
+import cn.edu.tongji.xfang.WebForJava.models.ChooseLessonEntityPK;
 import cn.edu.tongji.xfang.WebForJava.models.LessonsEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * @author Xinyu Fang
  */
-public interface ChooseLessonsEntityRepository extends JpaRepository<LessonsEntity, Integer> {
+public interface ChooseLessonsEntityRepository extends JpaRepository<LessonsEntity, ChooseLessonEntityPK> {
     /**
      * 根据课程号查询课程信息
      * @param lesson_id 课程号

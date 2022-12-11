@@ -8,10 +8,7 @@ import cn.edu.tongji.xfang.WebForJava.service.QuestionService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @title: QuestionServiceImpl
@@ -256,20 +253,62 @@ public class QuestionServiceImpl implements QuestionService {
         JsonResultEntity message = new JsonResultEntity();
         try {
             List<Integer> learnedChapterIdList = learnKnowledgeEntityRepository.findLearnedChapterIdByUserId(user_id);
-            Integer random_chapter_id_1 = learnedChapterIdList.get((int)(Math.random()*learnedChapterIdList.size()));
-            Integer random_chapter_id_2 = learnedChapterIdList.get((int)(Math.random()*learnedChapterIdList.size()));
-            List<ShortAnswerQuestionEntity> notAnswer_SAQList = shortAnswerQuestionEntityRepository.findNotAnsweredShortAnswerQuestionEntitiesByChapter(random_chapter_id_1,user_id,"short_answer_question");
-            List<ChoiceQuestionEntity> notAnswer_CQList = choiceQuestionEntityRepository.findNotAnsweredChoiceQuestionEntitiesByChapter(random_chapter_id_2,user_id,"choice_question");
+            List<ShortAnswerQuestionEntity> overAllnotAnswered_SAQList = new ArrayList<>();
+            List<ChoiceQuestionEntity> overAllnotAnswered_CQList = new ArrayList<>();
+            for (int id:learnedChapterIdList){
+                List<ShortAnswerQuestionEntity> tempSAQList = shortAnswerQuestionEntityRepository.findNotAnsweredShortAnswerQuestionEntitiesByChapter(id,user_id,"short_answer_question");
+                overAllnotAnswered_SAQList.addAll(tempSAQList);
+                List<ChoiceQuestionEntity> tempCQList = choiceQuestionEntityRepository.findNotAnsweredChoiceQuestionEntitiesByChapter(id,user_id,"short_answer_question");
+                overAllnotAnswered_CQList.addAll(tempCQList);
+            }
+
+            List<ShortAnswerQuestionEntity> notAnswer_SAQList = new ArrayList<>();
+            List<ChoiceQuestionEntity> notAnswer_CQList = new ArrayList<>();
+            Integer RecentLearnedChapter = learnedChapterIdList.get(learnedChapterIdList.size()-1);
+
+            for(ShortAnswerQuestionEntity SAQE: overAllnotAnswered_SAQList){
+                if(SAQE.getCorrChapterId().equals(RecentLearnedChapter)){
+                    notAnswer_SAQList.add(SAQE);
+                }
+                else{
+                    Random rand = new Random();
+                    if (notAnswer_SAQList.size() > (int) 1/3 * overAllnotAnswered_SAQList.size()){
+                        continue;
+                    }
+                    if(rand.nextInt(overAllnotAnswered_SAQList.size()) >(int) 2/3 * overAllnotAnswered_SAQList.size()){
+                        notAnswer_SAQList.add(SAQE);
+                    }
+                }
+            }
+
+            for(ChoiceQuestionEntity CQE: overAllnotAnswered_CQList){
+                if(CQE.getCorrChapterId().equals(RecentLearnedChapter)){
+                    notAnswer_CQList.add(CQE);
+                }
+                else{
+                    Random rand = new Random();
+                    if(notAnswer_CQList.size() > (int) 1/3 * overAllnotAnswered_CQList.size()){
+                        continue;
+
+                    }
+                    if(rand.nextInt(overAllnotAnswered_CQList.size()) > (int) 4/5 * overAllnotAnswered_CQList.size() ){
+                        notAnswer_CQList.add(CQE);
+                    }
+                }
+            }
+
             List<Map<String, Object>> returnSAQList = new ArrayList<>();
             List<Map<String, Object>> returnCQList = new ArrayList<>();
-            for(ShortAnswerQuestionEntity SAQ:notAnswer_SAQList)
+            HashSet<ShortAnswerQuestionEntity> notAnswer_SAQSet = new HashSet<>(notAnswer_SAQList);
+            HashSet<ChoiceQuestionEntity> notAnswer_CQSet = new HashSet<>(notAnswer_CQList);
+            for(ShortAnswerQuestionEntity SAQ:notAnswer_SAQSet)
             {
                 Map<String, Object> AnsweredSAQ = new HashMap<>();
                 AnsweredSAQ.put("detail",SAQ);
                 AnsweredSAQ.put("haveBeenAnswered",false);
                 returnSAQList.add(AnsweredSAQ);
             }
-            for(ChoiceQuestionEntity CQ:notAnswer_CQList)
+            for(ChoiceQuestionEntity CQ:notAnswer_CQSet)
             {
                 Map<String, Object> AnsweredCQ = new HashMap<>();
                 AnsweredCQ.put("detail",CQ);

@@ -94,7 +94,7 @@ public class AnswerSituationServiceImpl implements AnswerSituationService {
         }
         return message;
     }
-
+    @Override
     public JsonResultEntity findAllAnswerRecord(){
         JsonResultEntity message = new JsonResultEntity();
         try{

@@ -55,6 +55,9 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
+    /**
+     *
+     */
     public JsonResultEntity getLessons(){
         JsonResultEntity message = new JsonResultEntity();
         try {
@@ -70,6 +73,7 @@ public class LessonServiceImpl implements LessonService {
         return message;
     }
 
+    @Override
     public JsonResultEntity addLessons(String lessonTitle, String lessonContent){
         JsonResultEntity message = new JsonResultEntity();
         try {
@@ -87,6 +91,8 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public JsonResultEntity chooseLesson(int lessonId, int userId) throws Exception{
         JsonResultEntity message = new JsonResultEntity();
+        System.out.println(lessonId);
+        System.out.println(userId);
         try {
             int symbol = chooseLessonsEntityRepository.chooseLesson(userId,lessonId);
             message.status = true;

@@ -39,7 +39,7 @@ public class LessonController {
     @CrossOrigin("*")
     @RequestMapping(value = "choose",method = RequestMethod.POST)
     public JsonResultEntity chooseLesson(@RequestParam("student_id") int student_id, @RequestParam("lesson_id") int lesson_id) throws Exception {
-        return lessonService.chooseLesson(student_id, lesson_id);
+        return lessonService.chooseLesson(lesson_id, student_id);
     }
 
 }

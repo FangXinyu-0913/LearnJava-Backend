@@ -1,9 +1,6 @@
 package cn.edu.tongji.xfang.WebForJava.models;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -13,6 +10,7 @@ import java.util.Objects;
  * @Date: 2022/12/6 9:05
  * @Version 1.0
  */
+@Embeddable
 public class ChooseLessonEntityPK implements Serializable {
     @Column(name = "student_id")
     @Id
